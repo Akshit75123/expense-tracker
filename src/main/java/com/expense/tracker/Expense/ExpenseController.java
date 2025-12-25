@@ -25,7 +25,7 @@ public class ExpenseController {
 
         Expense expense = new Expense();
         expense.setAmount(expenseRequest.getAmount());
-        expense.setCategory(null); // ensure entity
+        expense.setCategory(expenseRequest.getCategory()); // ensure entity
         expense.setDescription(expenseRequest.getDescription());
         expense.setCreatedAt(LocalDateTime.now());
         expense.setExpenseDate(LocalDate.now());
