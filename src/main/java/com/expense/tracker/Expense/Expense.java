@@ -1,4 +1,6 @@
-package com.expense.tracker.model;
+package com.expense.tracker.Expense;
+
+import com.expense.tracker.Category.Category;
 import com.expense.tracker.Enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,10 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="expense")
+@Table(name = "expense")
 @Data
 
-public class Expense{
+public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +24,6 @@ public class Expense{
     private boolean deleted;
     private PaymentMethod paymentMethod;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private Category category;
 }
