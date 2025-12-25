@@ -8,5 +8,5 @@ import lombok.Data;
 public class ExpenseRequestDTO {
     private int amount;
     private String description;
-    private Long categoryId;
+    private String categoryName;
 }

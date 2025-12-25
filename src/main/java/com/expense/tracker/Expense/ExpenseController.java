@@ -37,9 +37,9 @@ public class ExpenseController {
 
     @PostMapping("/addExpense")
     public ResponseEntity<?> addExpense(@RequestBody ExpenseRequestDTO expenseRequest) {
-        Long categoryId = expenseRequest.getCategoryId();
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Catogory not found"));
+        String categoryName = expenseRequest.getCategoryName();
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
         Expense expense = new Expense();
         expense.setAmount(expenseRequest.getAmount());
