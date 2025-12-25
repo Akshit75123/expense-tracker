@@ -4,12 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.tracker.Category.Category;
-import com.expense.tracker.Category.CategoryRepository;
-import com.expense.tracker.Enums.PaymentMethod;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+import com.expense.tracker.Category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,38 +16,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ExpenseController {
 
     @Autowired
-    ExpenseRepository expenseRepository;
+    ExpenseService expenseService;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryService categoryService;
 
     @PostMapping("/addCategory")
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
-        Category cat = new Category();
-        cat.setName(category.getName());
-        cat.setActive(true);
-
-        categoryRepository.save(cat);
-        return ResponseEntity.ok("Category added successfull");
+        categoryService.addCategory(category);
+        return ResponseEntity.ok("Category added");
     }
 
     @PostMapping("/addExpense")
-    public ResponseEntity<?> addExpense(@RequestBody ExpenseRequestDTO expenseRequest) {
-        String categoryName = expenseRequest.getCategoryName();
-        Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        Expense expense = new Expense();
-        expense.setAmount(expenseRequest.getAmount());
-        expense.setCategory(category);
-        expense.setDescription(expenseRequest.getDescription());
-        expense.setCreatedAt(LocalDateTime.now());
-        expense.setExpenseDate(LocalDate.now());
-        expense.setPaymentMethod(PaymentMethod.CASH);
-
-        expenseRepository.save(expense);
-
-        return ResponseEntity.ok("Expense added successfully");
+    public ResponseEntity<?> addExpense(@RequestBody ExpenseDTO expenseRequest) {
+        expenseService.addExpense(expenseRequest);
+        return ResponseEntity.ok("Expense Added");
     }
 
 }
