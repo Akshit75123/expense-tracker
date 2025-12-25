@@ -1,9 +1,11 @@
-package com.expense.tracker.model;
+package com.expense.tracker.Category;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
-@Table(name="category")
+@Table(name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
