@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/expense-tracker/expense")
+@RequestMapping("/api/expenses")
 public class ExpenseController {
 
     @Autowired

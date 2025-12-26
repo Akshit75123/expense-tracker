@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/expense-tracker/category")
+@RequestMapping("/api/expenses/category")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;

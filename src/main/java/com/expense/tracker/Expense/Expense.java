@@ -25,6 +25,6 @@ public class Expense {
     private boolean deleted;
     private PaymentMethod paymentMethod;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "id")
     private Category category;
 }
