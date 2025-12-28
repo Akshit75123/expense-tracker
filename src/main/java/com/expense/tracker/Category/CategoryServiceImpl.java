@@ -14,5 +14,4 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
         return category;
     }
-
 }

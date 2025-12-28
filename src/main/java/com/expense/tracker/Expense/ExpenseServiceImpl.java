@@ -2,6 +2,8 @@ package com.expense.tracker.Expense;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,22 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpense(Long id) {
         Expense expense = expenseRepository.findById(id).orElseThrow(() -> new RuntimeException("No Expense Found"));
         expenseRepository.delete(expense);
+    }
+
+    @Override
+    public List<ExpenseResponseDTO> getAllExpenses() {
+        List<Expense> expenses = expenseRepository.findAllByOrderByExpenseDateDesc();
+        return expenses.stream().map(this::mapToExpenseResponseDTO).toList();
+    }
+
+    public ExpenseResponseDTO mapToExpenseResponseDTO(Expense expense) {
+        ExpenseResponseDTO dto = new ExpenseResponseDTO();
+        dto.setId(expense.getId());
+        dto.setAmount(expense.getAmount());
+        dto.setExpenseDate(expense.getExpenseDate());
+        dto.setDescription(expense.getDescription());
+        dto.setCategoryName(expense.getCategory().getName());
+        return dto;
     }
 
 }
