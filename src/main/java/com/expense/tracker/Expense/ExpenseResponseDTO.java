@@ -2,6 +2,7 @@ package com.expense.tracker.Expense;
 
 import lombok.Data;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class ExpenseResponseDTO {
@@ -10,4 +11,6 @@ public class ExpenseResponseDTO {
     private String description;
     private String categoryName;
     private LocalDate expenseDate;
+    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<ExpenseResponseDTO> getAllExpenses() {
         List<Expense> expenses = expenseRepository.findAllByOrderByExpenseDateDesc();
-        // return expenses.stream().map(this::mapToExpenseResponseDTO).toList();
 
         List<ExpenseResponseDTO> listOfExpenseDTO = new ArrayList<>();
         for (int i = 0; i < expenses.size(); i++) {
@@ -64,7 +64,23 @@ public class ExpenseServiceImpl implements ExpenseService {
         dto.setExpenseDate(expense.getExpenseDate());
         dto.setDescription(expense.getDescription());
         dto.setCategoryName(expense.getCategory().getName());
+        dto.setCreatedAt(expense.getCreatedAt());
+        dto.setUpdatedAt(expense.getUpdatedAt());
         return dto;
+    }
+
+    @Override
+    public ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto) {
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expense Do not Exist"));
+        Category category = categoryRepository.findByName(dto.getCategoryName())
+                .orElseThrow(() -> new RuntimeException("No Category Found"));
+        expense.setAmount(dto.getAmount());
+        expense.setDescription(dto.getDescription());
+        expense.setCategory(category);
+        expense.setUpdatedAt(LocalDateTime.now());
+        expenseRepository.save(expense);
+        return mapToExpenseResponseDTO(expense);
     }
 
 }

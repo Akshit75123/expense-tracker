@@ -3,12 +3,15 @@ package com.expense.tracker.Expense;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -31,8 +34,13 @@ public class ExpenseController {
     }
 
     @GetMapping("/get-expenses")
-    public ResponseEntity<?> getAllExpenses() {
+    public ResponseEntity<List<ExpenseResponseDTO>> getAllExpenses() {
         return ResponseEntity.ok(expenseService.getAllExpenses());
 
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<ExpenseResponseDTO> updateExpense(@PathVariable Long id, @RequestBody ExpenseDTO dto) {
+        return ResponseEntity.ok(expenseService.updateExpense(id, dto));
     }
 }
