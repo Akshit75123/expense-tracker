@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,8 +58,9 @@ public class ExpenseController {
     }
 
     @GetMapping("/filter/date")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByExpenseDate(@RequestParam LocalDate from,
-            @RequestParam LocalDate to) {
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByExpenseDate(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return ResponseEntity.ok(expenseService.filterExpenseByExpenseDate(from, to));
     }
 
@@ -66,6 +68,15 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam Integer min,
             @RequestParam Integer max) {
         return ResponseEntity.ok(expenseService.filterExpenseByAmount(min, max));
+    }
+
+    @GetMapping("/filter/advanced")
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAllParameters(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max,
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to) {
+        return ResponseEntity.ok(expenseService.filterExpenses(category, min, max, from, to));
     }
 
 }

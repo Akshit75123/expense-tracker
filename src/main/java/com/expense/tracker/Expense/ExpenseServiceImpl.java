@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.expense.tracker.Category.Category;
@@ -102,7 +103,16 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to) {
-        List<Expense> expenses = expenseRepository.findAllByExpenseDateBetweenOrderByExpenseDateDesc(from, to);
+
+        List<Expense> expenses = new ArrayList<>();
+        if (from != null && to != null)
+            expenses = expenseRepository.findAllByExpenseDateBetweenOrderByExpenseDateDesc(from, to);
+        else if (from != null)
+            expenses = expenseRepository.findAllByExpenseDateGreaterThanOrderByExpenseDateDesc(from);
+        else if (to != null)
+            expenses = expenseRepository.findAllByExpenseDateLessThanOrderByExpenseDateDesc(to);
+        else
+            expenses = expenseRepository.findAll();
         List<ExpenseResponseDTO> responseList = new ArrayList<>();
         for (Expense expense : expenses) {
             responseList.add(mapToExpenseResponseDTO(expense));
@@ -112,12 +122,44 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max) {
-        List<Expense> expenses = expenseRepository.findAllByAmountBetweenOrderByExpenseDateDesc(min, max);
+        List<Expense> expenses = new ArrayList<>();
+        if (max != null && min != null)
+            expenses = expenseRepository.findAllByAmountBetweenOrderByExpenseDateDesc(min, max);
+        else if (max != null)
+            expenses = expenseRepository.findAllByAmountLessThanEqualOrderByExpenseDateDesc(max);
+        else if (min != null)
+            expenses = expenseRepository.findAllByAmountGreaterThanEqualOrderByExpenseDateDesc(min);
+        else
+            expenses = expenseRepository.findAll();
         List<ExpenseResponseDTO> responseList = new ArrayList<>();
         for (Expense expense : expenses) {
             responseList.add(mapToExpenseResponseDTO(expense));
         }
         return responseList;
+    }
+
+    @Override
+    public List<ExpenseResponseDTO> filterExpenses(String category, Integer min, Integer max, LocalDate from,
+            LocalDate to) {
+        Specification<Expense> spec = (root, query, cb) -> cb.conjunction();
+
+        if (category != null) {
+            spec = spec.and(ExpenseSpecification.hasCategory(category));
+        }
+
+        if (min != null && max != null) {
+            spec = spec.and(ExpenseSpecification.amountBetween(min, max));
+        }
+
+        if (from != null && to != null) {
+            spec = spec.and(ExpenseSpecification.dateBetween(from, to));
+        }
+
+        return expenseRepository.findAll(spec)
+                .stream()
+                .map(this::mapToExpenseResponseDTO)
+                .toList();
+
     }
 
 }

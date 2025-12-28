@@ -21,4 +21,11 @@ public interface ExpenseService {
     List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to);
 
     List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max);
+
+    List<ExpenseResponseDTO> filterExpenses(
+            String category,
+            Integer min,
+            Integer max,
+            LocalDate from,
+            LocalDate to);
 }
