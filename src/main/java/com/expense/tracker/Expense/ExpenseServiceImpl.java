@@ -48,7 +48,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<ExpenseResponseDTO> getAllExpenses() {
         List<Expense> expenses = expenseRepository.findAllByOrderByExpenseDateDesc();
-        return expenses.stream().map(this::mapToExpenseResponseDTO).toList();
+        // return expenses.stream().map(this::mapToExpenseResponseDTO).toList();
+
+        List<ExpenseResponseDTO> listOfExpenseDTO = new ArrayList<>();
+        for (int i = 0; i < expenses.size(); i++) {
+            listOfExpenseDTO.add(mapToExpenseResponseDTO(expenses.get(i)));
+        }
+        return listOfExpenseDTO;
     }
 
     public ExpenseResponseDTO mapToExpenseResponseDTO(Expense expense) {
