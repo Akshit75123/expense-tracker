@@ -2,6 +2,8 @@ package com.expense.tracker.Expense;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 public interface ExpenseService {
     ExpenseDTO addExpense(ExpenseDTO dto);
 
@@ -10,4 +12,6 @@ public interface ExpenseService {
     List<ExpenseResponseDTO> getAllExpenses();
 
     ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto);
+
+    ExpenseResponseDTO getExpenseById(@PathVariable Long id);
 }

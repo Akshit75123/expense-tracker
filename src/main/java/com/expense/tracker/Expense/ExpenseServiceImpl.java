@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +80,13 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setCategory(category);
         expense.setUpdatedAt(LocalDateTime.now());
         expenseRepository.save(expense);
+        return mapToExpenseResponseDTO(expense);
+    }
+
+    @Override
+    public ExpenseResponseDTO getExpenseById(Long id) {
+        Expense expense = expenseRepository.findById(id).orElseThrow(() -> new RuntimeException("No Expense Found"));
+
         return mapToExpenseResponseDTO(expense);
     }
 

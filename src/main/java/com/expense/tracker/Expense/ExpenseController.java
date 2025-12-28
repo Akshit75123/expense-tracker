@@ -43,4 +43,9 @@ public class ExpenseController {
     public ResponseEntity<ExpenseResponseDTO> updateExpense(@PathVariable Long id, @RequestBody ExpenseDTO dto) {
         return ResponseEntity.ok(expenseService.updateExpense(id, dto));
     }
+
+    @GetMapping("/get-expense/{id}")
+    public ResponseEntity<ExpenseResponseDTO> getExpenseById(@PathVariable Long id) {
+        return ResponseEntity.ok(expenseService.getExpenseById(id));
+    }
 }
