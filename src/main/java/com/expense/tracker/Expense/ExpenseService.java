@@ -14,4 +14,6 @@ public interface ExpenseService {
     ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto);
 
     ExpenseResponseDTO getExpenseById(@PathVariable Long id);
+
+    List<ExpenseResponseDTO> getExpenseByCategoryName(String categoryName);
 }

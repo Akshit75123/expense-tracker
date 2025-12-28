@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -48,4 +49,10 @@ public class ExpenseController {
     public ResponseEntity<ExpenseResponseDTO> getExpenseById(@PathVariable Long id) {
         return ResponseEntity.ok(expenseService.getExpenseById(id));
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByCategoryName(@RequestParam String category) {
+        return ResponseEntity.ok(expenseService.getExpenseByCategoryName(category));
+    }
+
 }

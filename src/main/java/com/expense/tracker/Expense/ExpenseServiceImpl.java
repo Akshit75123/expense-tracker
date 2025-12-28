@@ -90,4 +90,14 @@ public class ExpenseServiceImpl implements ExpenseService {
         return mapToExpenseResponseDTO(expense);
     }
 
+    @Override
+    public List<ExpenseResponseDTO> getExpenseByCategoryName(String categoryName) {
+        List<Expense> expenses = expenseRepository.findAllByCategory_NameOrderByExpenseDateDesc(categoryName);
+        List<ExpenseResponseDTO> responseList = new ArrayList<>();
+        for (Expense expense : expenses) {
+            responseList.add(mapToExpenseResponseDTO(expense));
+        }
+        return responseList;
+    }
+
 }

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findAllByOrderByExpenseDateDesc();
+
+    List<Expense> findAllByCategory_NameOrderByExpenseDateDesc(String name);
 }
