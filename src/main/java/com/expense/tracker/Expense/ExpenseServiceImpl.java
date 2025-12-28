@@ -4,7 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -49,14 +55,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> getAllExpenses() {
-        List<Expense> expenses = expenseRepository.findAllByOrderByExpenseDateDesc();
+    public Page<ExpenseResponseDTO> getAllExpenses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("expenseDate").descending());
 
-        List<ExpenseResponseDTO> listOfExpenseDTO = new ArrayList<>();
-        for (int i = 0; i < expenses.size(); i++) {
-            listOfExpenseDTO.add(mapToExpenseResponseDTO(expenses.get(i)));
-        }
-        return listOfExpenseDTO;
+        Page<Expense> expenses = expenseRepository.findAll(pageable);
+
+        return expenses.map(this::mapToExpenseResponseDTO);
     }
 
     public ExpenseResponseDTO mapToExpenseResponseDTO(Expense expense) {
@@ -92,13 +96,16 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName) {
-        List<Expense> expenses = expenseRepository.findAllByCategory_NameOrderByExpenseDateDesc(categoryName);
-        List<ExpenseResponseDTO> responseList = new ArrayList<>();
-        for (Expense expense : expenses) {
-            responseList.add(mapToExpenseResponseDTO(expense));
-        }
-        return responseList;
+    public Page<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName, Integer page, Integer size,
+            String sortProperty, String sortType) {
+        Sort sort = null;
+        if (sortType.equalsIgnoreCase("asc")) {
+            sort = Sort.by(sortProperty).ascending();
+        } else
+            sort = Sort.by(sortProperty).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Expense> expenses = expenseRepository.findAllByCategory_Name(categoryName, pageable);
+        return expenses.map(this::mapToExpenseResponseDTO);
     }
 
     @Override

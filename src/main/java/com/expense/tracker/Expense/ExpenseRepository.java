@@ -3,6 +3,8 @@ package com.expense.tracker.Expense;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +28,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>, JpaSpec
     List<Expense> findAllByAmountLessThanEqualOrderByExpenseDateDesc(Integer max);
 
     List<Expense> findAllByAmountGreaterThanEqualOrderByExpenseDateDesc(Integer min);
+
+    Page<Expense> findAllByCategory_Name(String name, Pageable pageable);
 }

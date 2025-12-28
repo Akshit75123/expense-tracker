@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,8 +38,9 @@ public class ExpenseController {
     }
 
     @GetMapping("/get-expenses")
-    public ResponseEntity<List<ExpenseResponseDTO>> getAllExpenses() {
-        return ResponseEntity.ok(expenseService.getAllExpenses());
+    public ResponseEntity<Page<ExpenseResponseDTO>> getAllExpenses(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(expenseService.getAllExpenses(page, size));
 
     }
 
@@ -52,9 +54,13 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getExpenseById(id));
     }
 
-    @GetMapping("/filter/")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByCategoryName(@RequestParam String category) {
-        return ResponseEntity.ok(expenseService.filterExpenseByCategoryName(category));
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ExpenseResponseDTO>> filterExpenseByCategoryName(@RequestParam String category,
+            @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "expenseDate") String sortProperty,
+            @RequestParam(defaultValue = "desc") String sortType) {
+        return ResponseEntity
+                .ok(expenseService.filterExpenseByCategoryName(category, page, size, sortProperty, sortType));
     }
 
     @GetMapping("/filter/date")

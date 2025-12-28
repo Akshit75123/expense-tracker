@@ -3,6 +3,7 @@ package com.expense.tracker.Expense;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public interface ExpenseService {
@@ -10,13 +11,14 @@ public interface ExpenseService {
 
     void deleteExpense(Long id);
 
-    List<ExpenseResponseDTO> getAllExpenses();
+    Page<ExpenseResponseDTO> getAllExpenses(int page, int size);
 
     ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto);
 
     ExpenseResponseDTO getExpenseById(@PathVariable Long id);
 
-    List<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName);
+    Page<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName, Integer page, Integer size,
+            String sortProperty, String sortType);
 
     List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to);
 
