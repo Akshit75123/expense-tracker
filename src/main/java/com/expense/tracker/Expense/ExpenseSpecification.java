@@ -9,11 +9,19 @@ public class ExpenseSpecification {
         return (root, query, cb) -> cb.equal(root.get("category").get("name"), category);
     }
 
-    public static Specification<Expense> amountBetween(Integer min, Integer max) {
-        return (root, query, cb) -> cb.between(root.get("amount"), min, max);
+    public static Specification<Expense> amountGreaterThan(Integer min) {
+        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("amount"), min);
     }
 
-    public static Specification<Expense> dateBetween(LocalDate from, LocalDate to) {
-        return (root, query, cb) -> cb.between(root.get("expenseDate"), from, to);
+    public static Specification<Expense> amountLessThan(Integer max) {
+        return (root, query, cb) -> cb.lessThanOrEqualTo(root.get("amount"), max);
+    }
+
+    public static Specification<Expense> dateAfter(LocalDate from) {
+        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("expenseDate"), from);
+    }
+
+    public static Specification<Expense> dateBefore(LocalDate to) {
+        return (root, query, cb) -> cb.lessThanOrEqualTo(root.get("expenseDate"), to);
     }
 }

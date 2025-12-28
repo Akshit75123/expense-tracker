@@ -139,27 +139,39 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> filterExpenses(String category, Integer min, Integer max, LocalDate from,
+    public List<ExpenseResponseDTO> filterExpenses(
+            String category,
+            Integer min,
+            Integer max,
+            LocalDate from,
             LocalDate to) {
+
         Specification<Expense> spec = (root, query, cb) -> cb.conjunction();
 
-        if (category != null) {
+        if (category != null && !category.isBlank()) {
             spec = spec.and(ExpenseSpecification.hasCategory(category));
         }
 
-        if (min != null && max != null) {
-            spec = spec.and(ExpenseSpecification.amountBetween(min, max));
+        if (min != null) {
+            spec = spec.and(ExpenseSpecification.amountGreaterThan(min));
         }
 
-        if (from != null && to != null) {
-            spec = spec.and(ExpenseSpecification.dateBetween(from, to));
+        if (max != null) {
+            spec = spec.and(ExpenseSpecification.amountLessThan(max));
+        }
+
+        if (from != null) {
+            spec = spec.and(ExpenseSpecification.dateAfter(from));
+        }
+
+        if (to != null) {
+            spec = spec.and(ExpenseSpecification.dateBefore(to));
         }
 
         return expenseRepository.findAll(spec)
                 .stream()
                 .map(this::mapToExpenseResponseDTO)
                 .toList();
-
     }
 
 }

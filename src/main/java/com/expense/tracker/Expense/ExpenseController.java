@@ -65,18 +65,21 @@ public class ExpenseController {
     }
 
     @GetMapping("/filter/amount")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam Integer min,
-            @RequestParam Integer max) {
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max) {
         return ResponseEntity.ok(expenseService.filterExpenseByAmount(min, max));
     }
 
     @GetMapping("/filter/advanced")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAllParameters(
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenses(
             @RequestParam(required = false) String category,
-            @RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max,
-            @RequestParam(required = false) LocalDate from,
-            @RequestParam(required = false) LocalDate to) {
-        return ResponseEntity.ok(expenseService.filterExpenses(category, min, max, from, to));
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+
+        return ResponseEntity.ok(
+                expenseService.filterExpenses(category, min, max, from, to));
     }
 
 }
