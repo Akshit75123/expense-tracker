@@ -14,4 +14,15 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
         return category;
     }
+
+    @Override
+    public Category getOrCreateCategory(String name) {
+        return categoryRepository.findByName(name).orElseGet(() -> {
+            Category category = new Category();
+            category.setName(name);
+            category.setActive(true);
+            return categoryRepository.save(category);
+        });
+    }
+
 }

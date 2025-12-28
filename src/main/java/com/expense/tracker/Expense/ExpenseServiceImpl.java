@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.expense.tracker.Category.Category;
 import com.expense.tracker.Category.CategoryRepository;
+import com.expense.tracker.Category.CategoryService;
 import com.expense.tracker.Enums.PaymentMethod;
 
 @Service
@@ -22,11 +23,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    CategoryService categoryService;
+
     @Override
     public ExpenseDTO addExpense(ExpenseDTO expenseRequest) {
         String categoryName = expenseRequest.getCategoryName();
-        Category category = categoryRepository.findByName(categoryName)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryService.getOrCreateCategory(categoryName);
 
         Expense expense = new Expense();
         expense.setAmount(expenseRequest.getAmount());
@@ -73,8 +76,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto) {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Expense Do not Exist"));
-        Category category = categoryRepository.findByName(dto.getCategoryName())
-                .orElseThrow(() -> new RuntimeException("No Category Found"));
+        Category category = categoryService.getOrCreateCategory(dto.getCategoryName());
         expense.setAmount(dto.getAmount());
         expense.setDescription(dto.getDescription());
         expense.setCategory(category);
