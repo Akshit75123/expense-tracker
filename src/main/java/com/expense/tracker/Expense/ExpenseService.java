@@ -1,5 +1,6 @@
 package com.expense.tracker.Expense;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,4 +17,6 @@ public interface ExpenseService {
     ExpenseResponseDTO getExpenseById(@PathVariable Long id);
 
     List<ExpenseResponseDTO> getExpenseByCategoryName(String categoryName);
+
+    List<ExpenseResponseDTO> getExpenseByExpenseDate(LocalDate from, LocalDate to);
 }

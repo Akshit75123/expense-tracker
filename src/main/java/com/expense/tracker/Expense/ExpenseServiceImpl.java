@@ -100,4 +100,14 @@ public class ExpenseServiceImpl implements ExpenseService {
         return responseList;
     }
 
+    @Override
+    public List<ExpenseResponseDTO> getExpenseByExpenseDate(LocalDate from, LocalDate to) {
+        List<Expense> expenses = expenseRepository.findAllByExpenseDateBetweenOrderByExpenseDateDesc(from, to);
+        List<ExpenseResponseDTO> responseList = new ArrayList<>();
+        for (Expense expense : expenses) {
+            responseList.add(mapToExpenseResponseDTO(expense));
+        }
+        return responseList;
+    }
+
 }

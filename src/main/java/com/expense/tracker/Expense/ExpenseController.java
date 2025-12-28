@@ -3,6 +3,7 @@ package com.expense.tracker.Expense;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class ExpenseController {
     @GetMapping("/filter")
     public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByCategoryName(@RequestParam String category) {
         return ResponseEntity.ok(expenseService.getExpenseByCategoryName(category));
+    }
+
+    @GetMapping("/filter/date")
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByExpenseDate(@RequestParam LocalDate from,
+            @RequestParam LocalDate to) {
+        return ResponseEntity.ok(expenseService.getExpenseByExpenseDate(from, to));
     }
 
 }
