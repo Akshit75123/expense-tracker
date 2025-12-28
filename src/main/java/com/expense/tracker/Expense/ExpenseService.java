@@ -16,7 +16,9 @@ public interface ExpenseService {
 
     ExpenseResponseDTO getExpenseById(@PathVariable Long id);
 
-    List<ExpenseResponseDTO> getExpenseByCategoryName(String categoryName);
+    List<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName);
 
-    List<ExpenseResponseDTO> getExpenseByExpenseDate(LocalDate from, LocalDate to);
+    List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to);
+
+    List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max);
 }

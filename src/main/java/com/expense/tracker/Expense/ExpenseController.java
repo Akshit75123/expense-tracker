@@ -51,15 +51,21 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getExpenseById(id));
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filter/")
     public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByCategoryName(@RequestParam String category) {
-        return ResponseEntity.ok(expenseService.getExpenseByCategoryName(category));
+        return ResponseEntity.ok(expenseService.filterExpenseByCategoryName(category));
     }
 
     @GetMapping("/filter/date")
     public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByExpenseDate(@RequestParam LocalDate from,
             @RequestParam LocalDate to) {
-        return ResponseEntity.ok(expenseService.getExpenseByExpenseDate(from, to));
+        return ResponseEntity.ok(expenseService.filterExpenseByExpenseDate(from, to));
+    }
+
+    @GetMapping("/filter/amount")
+    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam Integer min,
+            @RequestParam Integer max) {
+        return ResponseEntity.ok(expenseService.filterExpenseByAmount(min, max));
     }
 
 }

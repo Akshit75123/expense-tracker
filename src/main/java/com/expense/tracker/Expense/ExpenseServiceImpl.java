@@ -91,7 +91,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> getExpenseByCategoryName(String categoryName) {
+    public List<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName) {
         List<Expense> expenses = expenseRepository.findAllByCategory_NameOrderByExpenseDateDesc(categoryName);
         List<ExpenseResponseDTO> responseList = new ArrayList<>();
         for (Expense expense : expenses) {
@@ -101,8 +101,18 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> getExpenseByExpenseDate(LocalDate from, LocalDate to) {
+    public List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to) {
         List<Expense> expenses = expenseRepository.findAllByExpenseDateBetweenOrderByExpenseDateDesc(from, to);
+        List<ExpenseResponseDTO> responseList = new ArrayList<>();
+        for (Expense expense : expenses) {
+            responseList.add(mapToExpenseResponseDTO(expense));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max) {
+        List<Expense> expenses = expenseRepository.findAllByAmountBetweenOrderByExpenseDateDesc(min, max);
         List<ExpenseResponseDTO> responseList = new ArrayList<>();
         for (Expense expense : expenses) {
             responseList.add(mapToExpenseResponseDTO(expense));
