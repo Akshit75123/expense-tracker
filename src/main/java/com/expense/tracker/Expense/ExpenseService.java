@@ -31,4 +31,7 @@ public interface ExpenseService {
                         LocalDate from,
                         LocalDate to, Integer page, Integer size,
                         String sortProperty, String sortType);
+
+        Page<ExpenseResponseDTO> searchExpenses(String text, Integer page, Integer size, String sortProperty,
+                        String sortType);
 }

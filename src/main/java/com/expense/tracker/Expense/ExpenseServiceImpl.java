@@ -189,4 +189,17 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .map(this::mapToExpenseResponseDTO);
     }
 
+    @Override
+    public Page<ExpenseResponseDTO> searchExpenses(String text, Integer page, Integer size, String sortProperty,
+            String sortType) {
+        Sort sort = sortType.equalsIgnoreCase("asc") ? Sort.by(sortProperty).ascending()
+                : Sort.by(sortProperty).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Expense> spec = Specification
+                .where(ExpenseSpecification.globalSearch(text));
+        return expenseRepository.findAll(spec, pageable).map(this::mapToExpenseResponseDTO);
+
+    }
+
 }

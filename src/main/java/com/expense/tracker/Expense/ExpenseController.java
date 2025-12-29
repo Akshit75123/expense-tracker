@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -98,6 +99,15 @@ public class ExpenseController {
 
         return ResponseEntity.ok(
                 expenseService.filterExpenses(category, min, max, from, to, page, size, sortProperty, sortType));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ExpenseResponseDTO>> searchExpense(@RequestParam String text,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "expenseDate") String sortProperty,
+            @RequestParam(defaultValue = "desc") String sortType) {
+        return ResponseEntity.ok(expenseService.searchExpenses(text, page, size, sortProperty, sortType));
     }
 
 }
