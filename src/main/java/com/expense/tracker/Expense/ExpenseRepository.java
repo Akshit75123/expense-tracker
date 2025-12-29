@@ -30,4 +30,16 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>, JpaSpec
     List<Expense> findAllByAmountGreaterThanEqualOrderByExpenseDateDesc(Integer min);
 
     Page<Expense> findAllByCategory_Name(String name, Pageable pageable);
+
+    Page<Expense> findAllByExpenseDateLessThanEqual(LocalDate to, Pageable pageable);
+
+    Page<Expense> findAllByExpenseDateGreaterThanEqual(LocalDate from, Pageable pageable);
+
+    Page<Expense> findAllByExpenseDateBetween(LocalDate from, LocalDate to, Pageable pageable);
+
+    Page<Expense> findAllByAmountLessThanEqual(Integer max, Pageable pageable);
+
+    Page<Expense> findAllByAmountGreaterThanEqual(Integer min, Pageable pageable);
+
+    Page<Expense> findAllByAmountBetween(Integer min, Integer max, Pageable pageable);
 }

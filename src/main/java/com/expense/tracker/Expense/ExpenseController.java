@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,28 +65,39 @@ public class ExpenseController {
     }
 
     @GetMapping("/filter/date")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByExpenseDate(
+    public ResponseEntity<Page<ExpenseResponseDTO>> filterExpenseByExpenseDate(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return ResponseEntity.ok(expenseService.filterExpenseByExpenseDate(from, to));
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "expenseDate") String sortProperty,
+            @RequestParam(defaultValue = "desc") String sortType) {
+        return ResponseEntity
+                .ok(expenseService.filterExpenseByExpenseDate(from, to, page, size, sortProperty, sortType));
     }
 
     @GetMapping("/filter/amount")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam(required = false) Integer min,
-            @RequestParam(required = false) Integer max) {
-        return ResponseEntity.ok(expenseService.filterExpenseByAmount(min, max));
+    public ResponseEntity<Page<ExpenseResponseDTO>> filterExpenseByAmount(@RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max, @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "expenseDate") String sortProperty,
+            @RequestParam(defaultValue = "desc") String sortType) {
+        return ResponseEntity.ok(expenseService.filterExpenseByAmount(min, max, page, size, sortProperty, sortType));
     }
 
     @GetMapping("/filter/advanced")
-    public ResponseEntity<List<ExpenseResponseDTO>> filterExpenses(
+    public ResponseEntity<Page<ExpenseResponseDTO>> filterExpenses(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Integer min,
             @RequestParam(required = false) Integer max,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(defaultValue = "expenseDate") String sortProperty,
+            @RequestParam(defaultValue = "desc") String sortType) {
 
         return ResponseEntity.ok(
-                expenseService.filterExpenses(category, min, max, from, to));
+                expenseService.filterExpenses(category, min, max, from, to, page, size, sortProperty, sortType));
     }
 
 }

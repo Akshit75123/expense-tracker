@@ -109,49 +109,55 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to) {
+    public Page<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to, Integer page, Integer size,
+            String sortProperty, String sortType) {
 
-        List<Expense> expenses = new ArrayList<>();
+        Page<Expense> expenses = null;
+        Sort sort = sortType.equalsIgnoreCase("asc") ? Sort.by(sortProperty).ascending()
+                : Sort.by(sortProperty).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         if (from != null && to != null)
-            expenses = expenseRepository.findAllByExpenseDateBetweenOrderByExpenseDateDesc(from, to);
+            expenses = expenseRepository.findAllByExpenseDateBetween(from, to, pageable);
         else if (from != null)
-            expenses = expenseRepository.findAllByExpenseDateGreaterThanOrderByExpenseDateDesc(from);
+            expenses = expenseRepository.findAllByExpenseDateGreaterThanEqual(from, pageable);
         else if (to != null)
-            expenses = expenseRepository.findAllByExpenseDateLessThanOrderByExpenseDateDesc(to);
+            expenses = expenseRepository.findAllByExpenseDateLessThanEqual(to, pageable);
         else
-            expenses = expenseRepository.findAll();
-        List<ExpenseResponseDTO> responseList = new ArrayList<>();
-        for (Expense expense : expenses) {
-            responseList.add(mapToExpenseResponseDTO(expense));
-        }
-        return responseList;
+            expenses = expenseRepository.findAll(pageable);
+
+        return expenses.map(this::mapToExpenseResponseDTO);
     }
 
     @Override
-    public List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max) {
-        List<Expense> expenses = new ArrayList<>();
+    public Page<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max, Integer page, Integer size,
+            String sortProperty, String sortType) {
+        Page<Expense> expenses = null;
+        Sort sort = sortType.equalsIgnoreCase("asc") ? Sort.by(sortProperty).ascending()
+                : Sort.by(sortProperty).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         if (max != null && min != null)
-            expenses = expenseRepository.findAllByAmountBetweenOrderByExpenseDateDesc(min, max);
+            expenses = expenseRepository.findAllByAmountBetween(min, max, pageable);
         else if (max != null)
-            expenses = expenseRepository.findAllByAmountLessThanEqualOrderByExpenseDateDesc(max);
+            expenses = expenseRepository.findAllByAmountLessThanEqual(max, pageable);
         else if (min != null)
-            expenses = expenseRepository.findAllByAmountGreaterThanEqualOrderByExpenseDateDesc(min);
+            expenses = expenseRepository.findAllByAmountGreaterThanEqual(min, pageable);
         else
-            expenses = expenseRepository.findAll();
-        List<ExpenseResponseDTO> responseList = new ArrayList<>();
-        for (Expense expense : expenses) {
-            responseList.add(mapToExpenseResponseDTO(expense));
-        }
-        return responseList;
+            expenses = expenseRepository.findAll(pageable);
+
+        return expenses.map(this::mapToExpenseResponseDTO);
     }
 
     @Override
-    public List<ExpenseResponseDTO> filterExpenses(
+    public Page<ExpenseResponseDTO> filterExpenses(
             String category,
             Integer min,
             Integer max,
             LocalDate from,
-            LocalDate to) {
+            LocalDate to,
+            Integer page,
+            Integer size,
+            String sortProperty,
+            String sortType) {
 
         Specification<Expense> spec = (root, query, cb) -> cb.conjunction();
 
@@ -175,10 +181,12 @@ public class ExpenseServiceImpl implements ExpenseService {
             spec = spec.and(ExpenseSpecification.dateBefore(to));
         }
 
-        return expenseRepository.findAll(spec)
-                .stream()
-                .map(this::mapToExpenseResponseDTO)
-                .toList();
+        Sort sort = sortType.equalsIgnoreCase("asc") ? Sort.by(sortProperty).ascending()
+                : Sort.by(sortProperty).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return expenseRepository.findAll(spec, pageable)
+                .map(this::mapToExpenseResponseDTO);
     }
 
 }

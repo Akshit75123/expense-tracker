@@ -1,33 +1,34 @@
 package com.expense.tracker.Expense;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public interface ExpenseService {
-    ExpenseDTO addExpense(ExpenseDTO dto);
+        ExpenseDTO addExpense(ExpenseDTO dto);
 
-    void deleteExpense(Long id);
+        void deleteExpense(Long id);
 
-    Page<ExpenseResponseDTO> getAllExpenses(int page, int size);
+        Page<ExpenseResponseDTO> getAllExpenses(int page, int size);
 
-    ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto);
+        ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto);
 
-    ExpenseResponseDTO getExpenseById(@PathVariable Long id);
+        ExpenseResponseDTO getExpenseById(@PathVariable Long id);
 
-    Page<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName, Integer page, Integer size,
-            String sortProperty, String sortType);
+        Page<ExpenseResponseDTO> filterExpenseByCategoryName(String categoryName, Integer page, Integer size,
+                        String sortProperty, String sortType);
 
-    List<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to);
+        Page<ExpenseResponseDTO> filterExpenseByExpenseDate(LocalDate from, LocalDate to, Integer page, Integer size,
+                        String sortProperty, String sortType);
 
-    List<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max);
+        Page<ExpenseResponseDTO> filterExpenseByAmount(Integer min, Integer max, Integer page, Integer size,
+                        String sortProperty, String sortType);
 
-    List<ExpenseResponseDTO> filterExpenses(
-            String category,
-            Integer min,
-            Integer max,
-            LocalDate from,
-            LocalDate to);
+        Page<ExpenseResponseDTO> filterExpenses(
+                        String category,
+                        Integer min,
+                        Integer max,
+                        LocalDate from,
+                        LocalDate to, Integer page, Integer size,
+                        String sortProperty, String sortType);
 }
