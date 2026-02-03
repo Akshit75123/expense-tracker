@@ -1,7 +1,7 @@
-package com.expense.tracker.Expense;
+package com.expense.tracker.expense;
 
-import com.expense.tracker.Category.Category;
-import com.expense.tracker.Enums.PaymentMethod;
+import com.expense.tracker.category.Category;
+import com.expense.tracker.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Data;
 

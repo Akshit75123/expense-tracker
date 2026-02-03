@@ -1,4 +1,4 @@
-package com.expense.tracker.Category;
+package com.expense.tracker.category;
 
 public interface CategoryService {
     Category addCategory(Category category);

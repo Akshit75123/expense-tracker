@@ -1,4 +1,4 @@
-package com.expense.tracker.Expense;
+package com.expense.tracker.expense;
 
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;

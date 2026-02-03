@@ -1,4 +1,4 @@
-package com.expense.tracker.Category;
+package com.expense.tracker.category;
 
 import jakarta.persistence.*;
 import lombok.Data;

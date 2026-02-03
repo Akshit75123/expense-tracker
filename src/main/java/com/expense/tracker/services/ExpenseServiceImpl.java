@@ -1,10 +1,7 @@
-package com.expense.tracker.Expense;
+package com.expense.tracker.expense;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -14,10 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.expense.tracker.Category.Category;
-import com.expense.tracker.Category.CategoryRepository;
-import com.expense.tracker.Category.CategoryService;
-import com.expense.tracker.Enums.PaymentMethod;
+import com.expense.tracker.category.Category;
+import com.expense.tracker.category.CategoryRepository;
+import com.expense.tracker.category.CategoryService;
+import com.expense.tracker.enums.PaymentMethod;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {

@@ -1,4 +1,4 @@
-package com.expense.tracker.Enums;
+package com.expense.tracker.enums;
 
 public enum PaymentMethod {
     CASH, CARD, UPI

@@ -1,4 +1,4 @@
-package com.expense.tracker.Expense;
+package com.expense.tracker.expense;
 
 import lombok.Data;
 import java.time.LocalDate;

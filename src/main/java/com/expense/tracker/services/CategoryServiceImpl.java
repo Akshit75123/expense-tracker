@@ -1,4 +1,4 @@
-package com.expense.tracker.Category;
+package com.expense.tracker.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
